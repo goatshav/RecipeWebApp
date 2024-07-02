@@ -40,4 +40,9 @@ public class RecipeRepo {
         }
         return recipewithIngredient;
     }
+
+    public void addNewRecipe(Recipe recipe) {
+        recipe.setId(++recipeCount);
+        recipes.add(recipe);
+    }
 }

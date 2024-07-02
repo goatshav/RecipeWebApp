@@ -2,6 +2,8 @@ package com.recipe_manager.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,6 +30,11 @@ public class Controller {
     @GetMapping("/recipes/search-by-ingredient/{ingredient}")
     public List<Recipe> getRecipeByIngredient(@PathVariable String ingredient) {
         return repo.listRecipeGivenIngredient(ingredient);
+    }
+
+    @PostMapping("/recipes")
+    public void createRecipe(@RequestBody Recipe recipe) {
+        repo.addNewRecipe(recipe);
     }
     
 }
