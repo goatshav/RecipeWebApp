@@ -1,6 +1,7 @@
 package com.recipe_manager.web;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -44,5 +45,16 @@ public class RecipeRepo {
     public void addNewRecipe(Recipe recipe) {
         recipe.setId(++recipeCount);
         recipes.add(recipe);
+    }
+
+    public void deleteById(int id) {
+        Iterator<Recipe> iterator = recipes.iterator();
+        while (iterator.hasNext()) {
+            Recipe recipe = iterator.next();
+            if (recipe.getId() == id) {
+                iterator.remove();
+                break;
+            }
+        }
     }
 }
