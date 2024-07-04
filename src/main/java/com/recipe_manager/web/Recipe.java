@@ -2,12 +2,22 @@ package com.recipe_manager.web;
 
 import java.util.ArrayList;
 
+import jakarta.validation.constraints.Size;
+
 public class Recipe {
     
     private int id;
+
+    @Size(min=1)
     private String title;
+
+    @Size(min=1)
     private String category;
+
+    @Size(min=1)
     private ArrayList<String> ingredients;
+
+    @Size(min=1)
     private ArrayList<String> steps;
     
     public Recipe(int id, String title, String category, ArrayList<String> ingredients, ArrayList<String> steps) {
@@ -25,7 +35,7 @@ public class Recipe {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getTitle() {
         return title;
     }
