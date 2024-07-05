@@ -13,9 +13,9 @@ public class RecipeRepo {
     private static int recipeCount;
 
     static {
-        recipes.add(new Recipe(++recipeCount, "Omelette", "breakfast", new ArrayList<>(List.of("eggs", "onions", "peppers", "salt", "cheese")), new ArrayList<>(List.of("omelette step 1", "omelette step 2", "omeletee step 3"))));
-        recipes.add(new Recipe(++recipeCount, "Burritos", "lunch", new ArrayList<>(List.of("tomatoes", "onions", "avocadoes", "lime", "beans", "tortillas")), new ArrayList<>(List.of("burritos step 1", "burritos step 2"))));
-        recipes.add(new Recipe(++recipeCount, "Tofu Noodles", "dinner", new ArrayList<>(List.of("tofu", "cornflour", "noodles", "broccoli", "garlic")), new ArrayList<>(List.of("noodles step 1", "noodles step 2", "noodles step 3"))));
+        recipes.add(new Recipe(++recipeCount, "Omelette", "breakfast", new ArrayList<>(List.of("eggs", "onions", "peppers", "salt", "cheese")), new ArrayList<>(List.of("omelette step 1", "omelette step 2", "omeletee step 3")), 3.5));
+        recipes.add(new Recipe(++recipeCount, "Burritos", "lunch", new ArrayList<>(List.of("tomatoes", "onions", "avocadoes", "lime", "beans", "tortillas")), new ArrayList<>(List.of("burritos step 1", "burritos step 2")), 4.2));
+        recipes.add(new Recipe(++recipeCount, "Tofu Noodles", "dinner", new ArrayList<>(List.of("tofu", "cornflour", "noodles", "broccoli", "garlic")), new ArrayList<>(List.of("noodles step 1", "noodles step 2", "noodles step 3")), 4.5));
     }
 
     public List<Recipe> listAllRecipes() {
@@ -45,6 +45,16 @@ public class RecipeRepo {
     public void addNewRecipe(Recipe recipe) {
         recipe.setId(++recipeCount);
         recipes.add(recipe);
+    }
+
+    public void saveRecipe(Recipe recipe) {
+        for (Recipe r : recipes) {
+            if (r.getId() == recipe.getId()) {
+                recipes.set(r.getId()-1, recipe);
+            }
+        }
+
+        
     }
 
     public void deleteById(int id) {

@@ -19,13 +19,16 @@ public class Recipe {
 
     @Size(min=1)
     private ArrayList<String> steps;
+
+    private double rating;
     
-    public Recipe(int id, String title, String category, ArrayList<String> ingredients, ArrayList<String> steps) {
+    public Recipe(int id, String title, String category, ArrayList<String> ingredients, ArrayList<String> steps, double rating) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.rating = rating;
     }
 
     public int getId() {
@@ -52,11 +55,21 @@ public class Recipe {
         return steps;
     }
 
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
     @Override
     public String toString() {
         return "Recipe [id=" + id + ", title=" + title + ", category=" + category + ", ingredients=" + ingredients
-                + ", steps=" + steps + "]";
+                + ", steps=" + steps + ", rating=" + rating + "]";
     }
+
+    
 
     
 
