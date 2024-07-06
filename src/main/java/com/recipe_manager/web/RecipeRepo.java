@@ -18,6 +18,8 @@ public class RecipeRepo {
         recipes.add(new Recipe(++recipeCount, "Tofu Noodles", "dinner", new ArrayList<>(List.of("tofu", "cornflour", "noodles", "broccoli", "garlic")), new ArrayList<>(List.of("noodles step 1", "noodles step 2", "noodles step 3")), 4.5));
     }
 
+    // reader actions:
+
     public List<Recipe> listAllRecipes() {
         return recipes;
     }
@@ -42,19 +44,19 @@ public class RecipeRepo {
         return recipewithIngredient;
     }
 
+    // writer actions:
+
     public void addNewRecipe(Recipe recipe) {
         recipe.setId(++recipeCount);
         recipes.add(recipe);
     }
 
-    public void saveRecipe(Recipe recipe) {
+    public void updateRecipe(Recipe recipe) {
         for (Recipe r : recipes) {
             if (r.getId() == recipe.getId()) {
                 recipes.set(r.getId()-1, recipe);
             }
         }
-
-        
     }
 
     public void deleteById(int id) {

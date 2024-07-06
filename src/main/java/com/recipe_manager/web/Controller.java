@@ -36,26 +36,21 @@ public class Controller {
         return repo.listAllRecipes();
     }
 
-    @PutMapping("/recipes/{id}")
-    public Recipe updateRecipeRating(@PathVariable int id, @RequestParam double rating) {
-        Recipe recipe = repo.listSpecificRecipe(id);
-        recipe.setRating(rating);
-        repo.saveRecipe(recipe);
-
-        return recipe;
-    }
-
     @GetMapping("/recipes/{id}")
     public EntityModel<Recipe> getSpecificRecipe(@PathVariable int id) {
         Recipe recipe = repo.listSpecificRecipe(id);
         EntityModel<Recipe> wrappedRecipe = EntityModel.of(recipe);
 
-        WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).getAllRecipes());
         if (recipe == null) {
             throw new RecipeNotFoundException("id=" + id);
-        } else {
-            return wrappedRecipe;
         }
+
+        WebMvcLinkBuilder linkOne = linkTo(methodOn(this.getClass()).getAllRecipes());
+        wrappedRecipe.add(linkOne.withRel("all-recipes"));
+        WebMvcLinkBuilder linkTwo = linkTo(methodOn(this.getClass()).updateRecipeRating(id, recipe.getRating()));
+        wrappedRecipe.add(linkTwo.withRel("update-rating"));
+        
+        return wrappedRecipe;
     }
 
     @GetMapping("/recipes/search-by-ingredient/{ingredient}")
@@ -69,6 +64,13 @@ public class Controller {
         }
     }
 
+    @PutMapping("/recipes/{id}")
+    public Recipe updateRecipeRating(@PathVariable int id, @RequestParam double rating) {
+        Recipe recipe = repo.listSpecificRecipe(id);
+        recipe.setRating(rating);
+
+        return recipe;
+    }
 
     @PostMapping("/recipes")
     public ResponseEntity<Object> createRecipe(@Valid @RequestBody Recipe recipe) {
