@@ -1,11 +1,20 @@
 package com.recipe_manager.web;
 
-import java.util.ArrayList;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
+@Entity
 public class Recipe {
     
+    protected Recipe() {
+        
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // automatically generates an id/primary key val
     private int id;
 
     @Size(min=1)
@@ -15,14 +24,14 @@ public class Recipe {
     private String category;
 
     @Size(min=1)
-    private ArrayList<String> ingredients;
+    private String ingredients;
 
     @Size(min=1)
-    private ArrayList<String> steps;
+    private String steps;
 
     private double rating;
     
-    public Recipe(int id, String title, String category, ArrayList<String> ingredients, ArrayList<String> steps, double rating) {
+    public Recipe(int id, String title, String category, String ingredients, String steps, double rating) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -47,11 +56,11 @@ public class Recipe {
         return category;
     }
 
-    public ArrayList<String> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public ArrayList<String> getSteps() {
+    public String getSteps() {
         return steps;
     }
 
