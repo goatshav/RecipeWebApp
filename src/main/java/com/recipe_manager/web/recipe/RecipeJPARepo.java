@@ -1,4 +1,4 @@
-package com.recipe_manager.web;
+package com.recipe_manager.web.recipe;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

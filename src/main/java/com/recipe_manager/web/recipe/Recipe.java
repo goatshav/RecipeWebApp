@@ -1,9 +1,13 @@
-package com.recipe_manager.web;
+package com.recipe_manager.web.recipe;
+
+import com.recipe_manager.web.user.User;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -12,6 +16,9 @@ public class Recipe {
     protected Recipe() {
         
     }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User author;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // automatically generates an id/primary key val
@@ -40,6 +47,10 @@ public class Recipe {
         this.rating = rating;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
     public int getId() {
         return id;
     }
@@ -64,6 +75,22 @@ public class Recipe {
         return steps;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
     public double getRating() {
         return rating;
     }
@@ -74,14 +101,8 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "Recipe [id=" + id + ", title=" + title + ", category=" + category + ", ingredients=" + ingredients
-                + ", steps=" + steps + ", rating=" + rating + "]";
+        return "Recipe [author=" + author + ", id=" + id + ", title=" + title + ", category=" + category
+                + ", ingredients=" + ingredients + ", steps=" + steps + ", rating=" + rating + "]";
     }
-
-    
-
-    
-
-    
 
 }
