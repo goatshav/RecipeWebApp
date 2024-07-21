@@ -1,53 +1,54 @@
-package com.recipe_manager.web.recipe;
+package com.recipe_manager.web.user.reader;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.net.URI;
-import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.recipe_manager.web.exceptions.RecipeNotFoundException;
+import com.recipe_manager.web.recipe.Recipe;
+import com.recipe_manager.web.recipe.RecipeJPARepo;
 
-import jakarta.validation.Valid;
 
 @RestController
-public class Controller {
+public class JPAReaderController {
     
-    private RecipeRepo repo;
+    @Autowired
+    private RecipeJPARepo repo;
 
-    public Controller(RecipeRepo repo) {
+    public JPAReaderController(RecipeJPARepo repo) {
         this.repo = repo;
     }
 
     @GetMapping("/recipes")
     public List<Recipe> getAllRecipes() {
-        return repo.listAllRecipes();
+        return repo.findAll();
     }
 
     @GetMapping("/recipes/{id}")
     public EntityModel<Recipe> getSpecificRecipe(@PathVariable int id) {
-        Recipe recipe = repo.listSpecificRecipe(id);
-        EntityModel<Recipe> wrappedRecipe = EntityModel.of(recipe);
+        Optional<Recipe> recipe = repo.findById(id);
+        EntityModel<Recipe> wrappedRecipe = EntityModel.of(recipe.get());
 
-        if (recipe == null) {
+        if (recipe.isEmpty()) {
             throw new RecipeNotFoundException("id=" + id);
         }
 
         WebMvcLinkBuilder linkOne = linkTo(methodOn(this.getClass()).getAllRecipes());
         wrappedRecipe.add(linkOne.withRel("all-recipes"));
-        WebMvcLinkBuilder linkTwo = linkTo(methodOn(this.getClass()).updateRecipeRating(id, recipe.getRating()));
+        WebMvcLinkBuilder linkTwo = linkTo(methodOn(this.getClass()).updateRecipeRating(id, recipe.get().getRating()));
         wrappedRecipe.add(linkTwo.withRel("update-rating"));
         
         return wrappedRecipe;
@@ -66,23 +67,10 @@ public class Controller {
 
     @PutMapping("/recipes/{id}")
     public Recipe updateRecipeRating(@PathVariable int id, @RequestParam double rating) {
-        Recipe recipe = repo.listSpecificRecipe(id);
-        recipe.setRating(rating);
+        Optional<Recipe> recipe = repo.findById(id);
+        recipe.get().setRating(rating);
 
-        return recipe;
-    }
+        return recipe.get();
+    }    
 
-    @PostMapping("/recipes")
-    public ResponseEntity<Object> createRecipe(@Valid @RequestBody Recipe recipe) {
-        repo.addNewRecipe(recipe);
-
-        URI location = URI.create("/users/" + recipe.getId());
-        return ResponseEntity.created(location).build();
-    }
-
-    @DeleteMapping("/recipes/{id}")
-    public void deleteRecipe(@PathVariable int id) {
-        repo.deleteById(id);
-    }
-    
 }

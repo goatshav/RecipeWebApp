@@ -18,7 +18,7 @@ public class Recipe {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private User author;
+    private User writer;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // automatically generates an id/primary key val
@@ -47,8 +47,8 @@ public class Recipe {
         this.rating = rating;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getWriter() {
+        return writer;
     }
 
     public int getId() {
@@ -101,7 +101,7 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "Recipe [author=" + author + ", id=" + id + ", title=" + title + ", category=" + category
+        return "Recipe [author=" + writer + ", id=" + id + ", title=" + title + ", category=" + category
                 + ", ingredients=" + ingredients + ", steps=" + steps + ", rating=" + rating + "]";
     }
 
